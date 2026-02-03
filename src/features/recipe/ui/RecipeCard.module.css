@@ -1,0 +1,46 @@
+.card {
+  background: var(--color-surface-elevated);
+  padding: 16px;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.card:hover {
+  border-color: var(--color-text);
+}
+
+.card:active {
+  background: var(--color-accent-subtle);
+}
+
+.card:hover .name {
+  text-decoration: underline;
+}
+
+.index {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 20px;
+}
+
+.name {
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  flex: 1;
+}
+
+.time {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}

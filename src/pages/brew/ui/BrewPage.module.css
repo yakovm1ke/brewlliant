@@ -1,0 +1,139 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 1;
+}
+
+.back {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.back:hover {
+  color: var(--color-text);
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.timerSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.timer {
+  font-size: 6rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.currentAction {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--color-text);
+  text-align: center;
+  max-width: 280px;
+}
+
+.stepCounter {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.nextStep {
+  padding: 16px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nextLabel {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.nextAction {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.completed {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  text-align: center;
+}
+
+.endMessage {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text);
+  max-width: 280px;
+}
+
+.signature {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+.homeLink {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  padding: 12px 24px;
+  border: 1px solid var(--color-border);
+  transition: all 0.15s ease;
+}
+
+.homeLink:hover {
+  border-color: var(--color-text);
+  color: var(--color-text);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+}
+
+.actionButton {
+  flex: 1;
+  padding: 12px 8px;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  text-align: center;
+}
+
+.actionButton:hover {
+  border-color: var(--color-text);
+  color: var(--color-text);
+}
