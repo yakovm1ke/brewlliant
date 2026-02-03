@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { Link, Navigate, useParams } from 'react-router-dom'
 
 import { RECIPES } from '@/shared'
+import { playFinalSound, playSuccessSound } from '@/shared/lib'
 import { Modal } from '@/shared/ui'
 
 import styles from './BrewPage.module.css'
@@ -87,6 +88,27 @@ export const BrewPage = (): React.ReactElement => {
 	const [isCompleted, setIsCompleted] = useState(false)
 	const [showFinishModal, setShowFinishModal] = useState(false)
 	const [showRestartModal, setShowRestartModal] = useState(false)
+	const isFirstRender = useRef(true)
+
+	// Play sound on step change
+	useEffect(() => {
+		if (isFirstRender.current) {
+			isFirstRender.current = false
+
+			return
+		}
+
+		if (!isCompleted) {
+			playFinalSound()
+		}
+	}, [currentStepIndex, isCompleted])
+
+	// Play success sound on completion
+	useEffect(() => {
+		if (isCompleted) {
+			playSuccessSound()
+		}
+	}, [isCompleted])
 
 	// Save state to localStorage when step or time changes
 	useEffect(() => {
