@@ -1,6 +1,6 @@
 const audioContext = new window.AudioContext()
 
-export const playFinalSound = (): void => {
+export const playStepEndSound = (): void => {
 	// Нежный звук: C5 + G5 одновременно (квинта)
 	const frequencies = [523, 784]
 

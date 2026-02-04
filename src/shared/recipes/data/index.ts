@@ -1,1 +1,1 @@
-export * from './regular-aero-press'
+export * from './RegularAeroPress'

@@ -1,1 +1,1 @@
-export { playFinalSound, playSuccessSound } from './sound'
+export { playStepEndSound, playSuccessSound } from './sound'

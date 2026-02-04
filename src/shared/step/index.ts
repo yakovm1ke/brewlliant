@@ -1,5 +1,2 @@
-export type Step = {
-	action: string;
-	duration: number;
-	type: 'wait' | 'action';
-}
+export * from './model'
+export * from './lib'

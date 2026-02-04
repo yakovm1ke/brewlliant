@@ -49,9 +49,47 @@
   max-width: 280px;
 }
 
+.stepDescription {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  max-width: 280px;
+  line-height: 1.5;
+}
+
 .stepCounter {
   font-size: 0.8rem;
   color: var(--color-text-muted);
+}
+
+.stepControls {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.stepControlButton {
+  padding: 8px 16px;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: 1px dashed var(--color-border);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.stepControlButton:hover:not(:disabled) {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  border-style: solid;
+}
+
+.stepControlButton:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
 
 .nextStep {
@@ -97,18 +135,39 @@
   color: var(--color-text-muted);
 }
 
-.homeLink {
+.restartLink {
+  font-family: inherit;
   font-size: 0.85rem;
   color: var(--color-text-muted);
-  text-decoration: none;
+  background: transparent;
   padding: 12px 24px;
   border: 1px solid var(--color-border);
+  cursor: pointer;
   transition: all 0.15s ease;
 }
 
-.homeLink:hover {
+.restartLink:hover {
   border-color: var(--color-text);
   color: var(--color-text);
+}
+
+.homeLinkBottom {
+  flex: 1;
+  padding: 14px 8px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-surface);
+  background: var(--color-text);
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  text-align: center;
+}
+
+.homeLinkBottom:hover {
+  opacity: 0.8;
 }
 
 .actions {

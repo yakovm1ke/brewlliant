@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 
 import { RECIPES } from '@/shared'
-import { playFinalSound, playSuccessSound } from '@/shared/lib'
+import { playStepEndSound, playSuccessSound } from '@/shared/lib'
 import { Modal } from '@/shared/ui'
 
 import styles from './BrewPage.module.css'
@@ -99,7 +99,7 @@ export const BrewPage = (): React.ReactElement => {
 		}
 
 		if (!isCompleted) {
-			playFinalSound()
+			playStepEndSound()
 		}
 	}, [currentStepIndex, isCompleted])
 
@@ -174,10 +174,31 @@ export const BrewPage = (): React.ReactElement => {
 	}
 
 	const currentStep = recipe.steps[currentStepIndex]
+	const hasPrevStep = currentStepIndex > 0
 	const hasNextStep = currentStepIndex + 1 < recipe.steps.length
 	const nextStep = hasNextStep ? recipe.steps[currentStepIndex + 1] : null
 
-	const handleFinishClick = () => {
+	const handlePrevStep = (): void => {
+		if (hasPrevStep) {
+			setCurrentStepIndex(currentStepIndex - 1)
+			setTimeLeft(recipe.steps[currentStepIndex - 1].duration)
+		}
+	}
+
+	const handleRestartStep = (): void => {
+		setTimeLeft(currentStep.duration)
+	}
+
+	const handleNextStep = (): void => {
+		if (hasNextStep) {
+			setCurrentStepIndex(currentStepIndex + 1)
+			setTimeLeft(recipe.steps[currentStepIndex + 1].duration)
+		} else {
+			setIsCompleted(true)
+		}
+	}
+
+	const handleFinishClick = (): void => {
 		setShowFinishModal(true)
 	}
 
@@ -215,14 +236,14 @@ export const BrewPage = (): React.ReactElement => {
 				<div className={styles.completed}>
 					<p className={styles.endMessage}>{recipe.endDescription}</p>
 					<p className={styles.signature}>Ваш повар Кокур</p>
-					<Link className={styles.homeLink} to="/">
-						К рецептам
-					</Link>
-				</div>
-				<div className={styles.actions}>
-					<button className={styles.actionButton} type="button" onClick={handleRestartClick}>
+					<button className={styles.restartLink} type="button" onClick={handleRestartClick}>
 						Начать сначала
 					</button>
+				</div>
+				<div className={styles.actions}>
+					<Link className={styles.homeLinkBottom} to="/">
+						К рецептам
+					</Link>
 				</div>
 
 				{showRestartModal && (
@@ -248,6 +269,9 @@ export const BrewPage = (): React.ReactElement => {
 			<div className={styles.timerSection}>
 				<div className={styles.timer}>{timeLeft}</div>
 				<p className={styles.currentAction}>{currentStep.action}</p>
+				{currentStep.description && (
+					<p className={styles.stepDescription}>{currentStep.description}</p>
+				)}
 				<p className={styles.stepCounter}>
 					Шаг
 					{' '}
@@ -257,6 +281,31 @@ export const BrewPage = (): React.ReactElement => {
 					{' '}
 					{recipe.steps.length}
 				</p>
+			</div>
+
+			<div className={styles.stepControls}>
+				<button
+					className={styles.stepControlButton}
+					disabled={!hasPrevStep}
+					type="button"
+					onClick={handlePrevStep}
+				>
+					← Назад
+				</button>
+				<button
+					className={styles.stepControlButton}
+					type="button"
+					onClick={handleRestartStep}
+				>
+					↻ Заново
+				</button>
+				<button
+					className={styles.stepControlButton}
+					type="button"
+					onClick={handleNextStep}
+				>
+					Вперёд →
+				</button>
 			</div>
 
 			{nextStep !== null && (

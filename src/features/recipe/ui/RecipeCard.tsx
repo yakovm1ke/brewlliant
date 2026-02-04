@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { formatDuration, intervalToDuration } from 'date-fns'
 
 import { type Recipe } from '@/shared/recipes'
-import { sumStepsDuration } from '@/shared/step/lib'
+import { sumStepsDuration } from '@/shared/step'
 
 import styles from './RecipeCard.module.css'
 
