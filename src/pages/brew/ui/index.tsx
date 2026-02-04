@@ -14,6 +14,7 @@ const STORAGE_KEY = 'brewlliant_brew_state'
 type BrewState = {
 	step: number
 	timeLeft: number
+	isPaused?: boolean
 }
 
 type StoredData = Record<string, BrewState>
@@ -87,24 +88,25 @@ export const BrewPage = (): React.ReactElement => {
 		}
 	}, [setTopBarLeft, recipe?.id])
 
-	const getInitialState = (): { step: number; time: number } => {
+	const getInitialState = (): { step: number; time: number; isPaused: boolean } => {
 		if (!recipe || !id) {
-			return { step: 0, time: 0 }
+			return { step: 0, time: 0, isPaused: false }
 		}
 
 		const storedState = getStoredState(id)
 
 		if (storedState && storedState.step < recipe.steps.length) {
-			return { step: storedState.step, time: storedState.timeLeft }
+			return { step: storedState.step, time: storedState.timeLeft, isPaused: storedState.isPaused ?? false }
 		}
 
-		return { step: 0, time: recipe.steps[0].duration }
+		return { step: 0, time: recipe.steps[0].duration, isPaused: false }
 	}
 
 	const initialState = getInitialState()
 
 	const [currentStepIndex, setCurrentStepIndex] = useState(initialState.step)
 	const [timeLeft, setTimeLeft] = useState(initialState.time)
+	const [isPaused, setIsPaused] = useState(initialState.isPaused)
 	const [isCompleted, setIsCompleted] = useState(false)
 	const [showFinishModal, setShowFinishModal] = useState(false)
 	const [showRestartModal, setShowRestartModal] = useState(false)
@@ -139,8 +141,9 @@ export const BrewPage = (): React.ReactElement => {
 		saveState(id, {
 			step: currentStepIndex,
 			timeLeft,
+			isPaused,
 		})
-	}, [id, currentStepIndex, timeLeft, isCompleted])
+	}, [id, currentStepIndex, timeLeft, isPaused, isCompleted])
 
 	// Clear state when completed or when leaving the page
 	useEffect(() => {
@@ -159,7 +162,7 @@ export const BrewPage = (): React.ReactElement => {
 
 	// Timer
 	useEffect(() => {
-		if (!recipe || isCompleted) {
+		if (!recipe || isCompleted || isPaused) {
 			return
 		}
 
@@ -187,7 +190,7 @@ export const BrewPage = (): React.ReactElement => {
 		return () => {
 			clearInterval(timer)
 		}
-	}, [recipe, currentStepIndex, isCompleted])
+	}, [recipe, currentStepIndex, isPaused, isCompleted])
 
 	if (!recipe) {
 		return <Navigate replace to="/404" />
@@ -197,6 +200,17 @@ export const BrewPage = (): React.ReactElement => {
 	const hasPrevStep = currentStepIndex > 0
 	const hasNextStep = currentStepIndex + 1 < recipe.steps.length
 	const nextStep = hasNextStep ? recipe.steps[currentStepIndex + 1] : null
+	const stepDuration = currentStep.duration
+	const elapsed = Math.max(0, Math.min(stepDuration, stepDuration - timeLeft))
+	const progressPercent = stepDuration > 0 ? (elapsed / stepDuration) * 100 : 0
+
+	const adjustTimeLeft = (deltaSeconds: number): void => {
+		setTimeLeft((prev) => {
+			const next = prev + deltaSeconds
+
+			return Math.max(0, Math.min(stepDuration, next))
+		})
+	}
 
 	const handlePrevStep = (): void => {
 		if (hasPrevStep) {
@@ -207,6 +221,10 @@ export const BrewPage = (): React.ReactElement => {
 
 	const handleRestartStep = (): void => {
 		setTimeLeft(currentStep.duration)
+	}
+
+	const handleTogglePause = (): void => {
+		setIsPaused((prev) => !prev)
 	}
 
 	const handleNextStep = (): void => {
@@ -281,6 +299,35 @@ export const BrewPage = (): React.ReactElement => {
 			<h1 className={styles.title}>{recipe.name}</h1>
 
 			<div className={styles.timerSection}>
+				<div className={styles.progressRow}>
+					<button
+						aria-label="Добавить 5 секунд"
+						className={`${styles.stepControlButton} ${styles.adjustButton}`}
+						type="button"
+						onClick={() => adjustTimeLeft(5)}
+					>
+						+5s
+					</button>
+					<input
+						aria-label="Прогресс текущего шага"
+						className={styles.progress}
+						max={stepDuration}
+						min={0}
+						step={1}
+						style={{ '--progress': `${progressPercent}%` } as React.CSSProperties}
+						type="range"
+						value={elapsed}
+						onChange={() => {}}
+					/>
+					<button
+						aria-label="Убавить 5 секунд"
+						className={`${styles.stepControlButton} ${styles.adjustButton}`}
+						type="button"
+						onClick={() => adjustTimeLeft(-5)}
+					>
+						−5s
+					</button>
+				</div>
 				<div className={styles.timer}>{timeLeft}</div>
 				<p className={styles.currentAction}>{currentStep.action}</p>
 				{currentStep.description && (
@@ -306,13 +353,24 @@ export const BrewPage = (): React.ReactElement => {
 				>
 					← Назад
 				</button>
-				<button
-					className={styles.stepControlButton}
-					type="button"
-					onClick={handleRestartStep}
-				>
-					↻ Заново
-				</button>
+				<div className={styles.centerControls}>
+					<button
+						aria-label={isPaused ? 'Продолжить таймер' : 'Поставить таймер на паузу'}
+						aria-pressed={isPaused}
+						className={`${styles.stepControlButton} ${isPaused ? styles.primaryControl : ''}`}
+						type="button"
+						onClick={handleTogglePause}
+					>
+						{isPaused ? '▶ Продолжить' : '⏸ Пауза'}
+					</button>
+					<button
+						className={styles.stepControlButton}
+						type="button"
+						onClick={handleRestartStep}
+					>
+						↻ Заново
+					</button>
+				</div>
 				<button
 					className={styles.stepControlButton}
 					type="button"

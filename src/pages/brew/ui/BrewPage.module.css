@@ -33,6 +33,58 @@
   gap: 16px;
 }
 
+.progressRow {
+  width: min(360px, 100%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.progress {
+  flex: 1;
+  height: 10px;
+  appearance: none;
+  -webkit-appearance: none;
+  background: linear-gradient(
+    to right,
+    var(--color-text) 0 var(--progress, 0%),
+    var(--color-border) var(--progress, 0%) 100%
+  );
+  border-radius: 999px;
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+.progress::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--color-text);
+  border: 2px solid var(--color-surface);
+}
+
+.progress::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--color-text);
+  border: 2px solid var(--color-surface);
+}
+
+.progress::-moz-range-track {
+  height: 10px;
+  background: transparent;
+}
+
+.adjustButton {
+  padding: 6px 10px;
+  font-size: 0.7rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
 .timer {
   font-size: 6rem;
   font-weight: 700;
@@ -66,6 +118,18 @@
   display: flex;
   justify-content: center;
   gap: 8px;
+  align-items: center;
+}
+
+.centerControls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.centerControls .stepControlButton {
+  width: 100%;
 }
 
 .stepControlButton {
@@ -79,6 +143,17 @@
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.15s ease;
+}
+
+.primaryControl {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  border-style: solid;
+  background: var(--color-accent-subtle);
+}
+
+.primaryControl:hover {
+  opacity: 0.9;
 }
 
 .stepControlButton:hover:not(:disabled) {
