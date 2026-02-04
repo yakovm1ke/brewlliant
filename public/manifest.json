@@ -2,7 +2,7 @@
   "name": "Brewlliant",
   "short_name": "Brewlliant",
   "description": "Вари с поваром Кокуром",
-  "start_url": "/",
+  "start_url": "/brewlliant/",
   "display": "standalone",
   "background_color": "#fffcf9",
   "theme_color": "#fffcf9",
