@@ -10,12 +10,32 @@ import { type LayoutOutletContext } from '@/shared/ui/layout'
 
 import styles from './RecipePage.module.css'
 
+const BREW_STORAGE_KEY = 'brewlliant_brew_state'
+
 const formatSeconds = (seconds: number): string => {
 	const duration = intervalToDuration({ start: 0, end: seconds * 1000 })
 
 	return formatDuration(duration, {
 		format: ['minutes', 'seconds'],
 	})
+}
+
+const clearBrewState = (recipeId: string): void => {
+	try {
+		const stored = localStorage.getItem(BREW_STORAGE_KEY)
+
+		if (!stored) {
+			return
+		}
+
+		const data = JSON.parse(stored) as Record<string, unknown>
+		const { [recipeId]: _, ...rest } = data
+
+		void _
+		localStorage.setItem(BREW_STORAGE_KEY, JSON.stringify(rest))
+	} catch {
+		// ignore storage errors
+	}
 }
 
 export const RecipePage = (): React.ReactElement => {
@@ -81,10 +101,14 @@ export const RecipePage = (): React.ReactElement => {
 				</ol>
 			</details>
 
-			<p className={styles.startHint}>{recipe.startDescription}</p>
-			<Link className={styles.startButton} to={`/brew/${recipe.id}`}>
-				Начать
-			</Link>
+		<p className={styles.startHint}>{recipe.startDescription}</p>
+		<Link
+			className={styles.startButton}
+			to={`/brew/${recipe.id}`}
+			onClick={() => clearBrewState(recipe.id)}
+		>
+			Начать
+		</Link>
 		</div>
 	)
 }

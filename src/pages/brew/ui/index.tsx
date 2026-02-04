@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
-import { Link, Navigate, useOutletContext, useParams } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useOutletContext, useParams } from 'react-router-dom'
 
 import { RECIPES } from '@/shared'
 import { playStepEndSound, playSuccessSound } from '@/shared/lib'
@@ -66,6 +66,7 @@ const clearState = (recipeId: string): void => {
 }
 
 export const BrewPage = (): React.ReactElement => {
+	const navigate = useNavigate()
 	const { setTopBarLeft } = useOutletContext<LayoutOutletContext>()
 	const { id } = useParams<{ id: string }>()
 	const recipe = RECIPES.find((r) => r.id === id)
@@ -242,7 +243,7 @@ export const BrewPage = (): React.ReactElement => {
 
 	const handleFinishConfirm = () => {
 		setShowFinishModal(false)
-		setIsCompleted(true)
+		navigate(`/recipe/${recipe!.id}`)
 	}
 
 	const handleFinishCancel = () => {
