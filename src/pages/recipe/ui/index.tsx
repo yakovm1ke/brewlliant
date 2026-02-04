@@ -1,9 +1,12 @@
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { useLayoutEffect } from 'react'
+
+import { Link, Navigate, useOutletContext, useParams } from 'react-router-dom'
 
 import { formatDuration, intervalToDuration } from 'date-fns'
 
 import { RECIPES } from '@/shared'
 import { sumStepsDuration } from '@/shared/step'
+import { type LayoutOutletContext } from '@/shared/ui/layout'
 
 import styles from './RecipePage.module.css'
 
@@ -16,8 +19,27 @@ const formatSeconds = (seconds: number): string => {
 }
 
 export const RecipePage = (): React.ReactElement => {
+	const { setTopBarLeft } = useOutletContext<LayoutOutletContext>()
 	const { id } = useParams<{ id: string }>()
 	const recipe = RECIPES.find((r) => r.id === id)
+
+	useLayoutEffect(() => {
+		if (!recipe) {
+			setTopBarLeft(null)
+
+			return
+		}
+
+		setTopBarLeft(
+			<Link className={styles.back} to="/">
+				← Назад
+			</Link>,
+		)
+
+		return () => {
+			setTopBarLeft(null)
+		}
+	}, [setTopBarLeft, recipe?.id])
 
 	if (!recipe) {
 		return <Navigate replace to="/404" />
@@ -25,10 +47,6 @@ export const RecipePage = (): React.ReactElement => {
 
 	return (
 		<div className={styles.container}>
-			<Link className={styles.back} to="/">
-				← Назад
-			</Link>
-
 			<h1 className={styles.title}>{recipe.name}</h1>
 			<p className={styles.time}>{formatSeconds(sumStepsDuration(recipe.steps))}</p>
 			<p className={styles.description}>{recipe.description}</p>

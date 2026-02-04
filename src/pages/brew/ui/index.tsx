@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useOutletContext, useParams } from 'react-router-dom'
 
 import { RECIPES } from '@/shared'
 import { playStepEndSound, playSuccessSound } from '@/shared/lib'
+import { type LayoutOutletContext } from '@/shared/ui/layout'
 import { Modal } from '@/shared/ui'
 
 import styles from './BrewPage.module.css'
@@ -64,8 +65,27 @@ const clearState = (recipeId: string): void => {
 }
 
 export const BrewPage = (): React.ReactElement => {
+	const { setTopBarLeft } = useOutletContext<LayoutOutletContext>()
 	const { id } = useParams<{ id: string }>()
 	const recipe = RECIPES.find((r) => r.id === id)
+
+	useLayoutEffect(() => {
+		if (!recipe) {
+			setTopBarLeft(null)
+
+			return
+		}
+
+		setTopBarLeft(
+			<Link className={styles.back} to={`/recipe/${recipe.id}`}>
+				← К рецепту
+			</Link>,
+		)
+
+		return () => {
+			setTopBarLeft(null)
+		}
+	}, [setTopBarLeft, recipe?.id])
 
 	const getInitialState = (): { step: number; time: number } => {
 		if (!recipe || !id) {
@@ -229,9 +249,6 @@ export const BrewPage = (): React.ReactElement => {
 	if (isCompleted) {
 		return (
 			<div className={styles.container}>
-				<Link className={styles.back} to={`/recipe/${recipe.id}`}>
-					← К рецепту
-				</Link>
 				<h1 className={styles.title}>{recipe.name}</h1>
 				<div className={styles.completed}>
 					<p className={styles.endMessage}>{recipe.endDescription}</p>
@@ -261,9 +278,6 @@ export const BrewPage = (): React.ReactElement => {
 
 	return (
 		<div className={styles.container}>
-			<Link className={styles.back} to={`/recipe/${recipe.id}`}>
-				← К рецепту
-			</Link>
 			<h1 className={styles.title}>{recipe.name}</h1>
 
 			<div className={styles.timerSection}>

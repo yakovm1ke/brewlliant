@@ -17,6 +17,31 @@
     <!-- Theme color -->
     <meta name="theme-color" content="#fffcf9" />
 
+    <!-- Theme init (prevents flash on load) -->
+    <script>
+      (function() {
+        var STORAGE_KEY = 'brewlliant_theme';
+        var storedTheme = null;
+
+        try {
+          storedTheme = localStorage.getItem(STORAGE_KEY);
+        } catch (e) {
+          // ignore storage errors
+        }
+
+        var resolvedTheme = (storedTheme === 'dark' || storedTheme === 'light')
+          ? storedTheme
+          : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+        document.documentElement.dataset.theme = resolvedTheme;
+
+        var metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        if (metaThemeColor) {
+          metaThemeColor.setAttribute('content', resolvedTheme === 'dark' ? '#1f2026' : '#fffcf9');
+        }
+      }());
+    </script>
+
     <!-- Web App Manifest -->
     <link rel="manifest" href="/manifest.json" />
 

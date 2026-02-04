@@ -19,6 +19,28 @@
 
   /* Typography */
   --font-family: 'Noto Sans JP', system-ui, sans-serif;
+
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  /* Background */
+  --color-bg: #1f2026;
+  --color-surface: #24252d;
+  --color-surface-elevated: #2b2d36;
+
+  /* Text */
+  --color-text: #ececf2;
+  --color-text-muted: #b6b7c2;
+
+  /* Border */
+  --color-border: #3a3c48;
+
+  /* Accent */
+  --color-accent: #ececf2;
+  --color-accent-subtle: #353744;
+
+  color-scheme: dark;
 }
 
 * {
