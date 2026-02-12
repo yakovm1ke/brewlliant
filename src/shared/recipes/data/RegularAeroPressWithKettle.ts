@@ -1,8 +1,8 @@
 import { type Recipe } from '../model'
 
-export const REGULAR_AERO_PRESS_RECIPE: Recipe = {
+export const REGULAR_AERO_PRESS_WITH_KETTLE_RECIPE: Recipe = {
 	id: 'regular-aeropress',
-	name: 'Классический аэропресс',
+	name: 'Классический аэропресс (с ожиданием чайника)',
 	description: 'Мягкий и насыщенный кофе с чистым вкусом',
 	preconditions: [
 		'Поставь чайник. Начни приготовление, когда чайник закипит',
@@ -13,6 +13,12 @@ export const REGULAR_AERO_PRESS_RECIPE: Recipe = {
 	startDescription: 'Когда чайник вскипит — самое время начинать',
 	endDescription: 'Готово! Наслаждайся своим кофе ☕',
 	steps: [
+		{
+			action: 'Пусть вода немного остынет — так кофе не будет горчить',
+			duration: 150,
+			type: 'wait',
+			description: 'Убедись, что кофе уже засыпан в аэропресс и готов к заливке воды',
+		},
 		{
 			action: 'Плавно залей воду на треть объёма',
 			duration: 10,
