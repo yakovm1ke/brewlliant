@@ -1,7 +1,7 @@
 import { type Recipe } from '../model'
 
 export const REGULAR_AERO_PRESS_WITH_KETTLE_RECIPE: Recipe = {
-	id: 'regular-aeropress',
+	id: 'regular-aeropress-with-kettle',
 	name: 'Классический аэропресс (с ожиданием чайника)',
 	description: 'Мягкий и насыщенный кофе с чистым вкусом',
 	preconditions: [
