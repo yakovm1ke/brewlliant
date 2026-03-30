@@ -1,2 +1,2 @@
 export * from './RegularAeroPress'
-export * from './RegularAeroPressWithKettle'
+export * from './InvertedAeroPress'
