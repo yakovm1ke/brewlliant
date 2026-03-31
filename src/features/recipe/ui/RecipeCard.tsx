@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { formatDuration, intervalToDuration } from 'date-fns'
 
@@ -21,15 +21,35 @@ const formatSeconds = (seconds: number): string => {
 }
 
 export const RecipeCard = ({ recipe, index }: RecipeCardProps): React.ReactElement => {
+	const navigate = useNavigate()
+
 	return (
-		<Link className={styles.card} to={`/recipe/${recipe.id}`}>
-			<span className={styles.index}>
-				{String(index + 1).padStart(2, '0')}
-			</span>
-			<h2 className={styles.name}>{recipe.name}</h2>
-			<span className={styles.time}>
-				{formatSeconds(sumStepsDuration(recipe.steps))}
-			</span>
-		</Link>
+		<div className={styles.card}>
+			<div className={styles.info}>
+				<span className={styles.index}>
+					{String(index + 1).padStart(2, '0')}
+				</span>
+				<h2 className={styles.name}>{recipe.name}</h2>
+				<span className={styles.time}>
+					{formatSeconds(sumStepsDuration(recipe.steps))}
+				</span>
+			</div>
+			<div className={styles.actions}>
+				<button
+					className={styles.btnSecondary}
+					type="button"
+					onClick={() => navigate(`/recipe/${recipe.id}`)}
+				>
+					О рецепте
+				</button>
+				<button
+					className={styles.btnPrimary}
+					type="button"
+					onClick={() => navigate(`/brew/${recipe.id}`)}
+				>
+					Начать
+				</button>
+			</div>
+		</div>
 	)
 }
