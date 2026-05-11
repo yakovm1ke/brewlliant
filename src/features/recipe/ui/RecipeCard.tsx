@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { formatDuration, intervalToDuration } from 'date-fns'
 
+import { clearBrewState } from '@/shared/lib'
 import { type Recipe } from '@/shared/recipes'
 import { sumStepsDuration } from '@/shared/step'
 
@@ -45,7 +46,10 @@ export const RecipeCard = ({ recipe, index }: RecipeCardProps): React.ReactEleme
 				<button
 					className={styles.btnPrimary}
 					type="button"
-					onClick={() => navigate(`/brew/${recipe.id}`)}
+					onClick={() => {
+						navigate(`/brew/${recipe.id}`)
+						clearBrewState(recipe.id)
+					}}
 				>
 					Начать
 				</button>
